@@ -1,0 +1,8 @@
+{
+  "name": "babylon",
+  "dependencies": {
+    "underscore": "~1.4.4",
+    "moment": "~2.8.4",
+    "react-router": "~0.11.4"
+  }
+}
