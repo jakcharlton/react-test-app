@@ -2,15 +2,19 @@
   "name": "something",
   "devDependencies": {
     "browserify": "~> 6.3",
-    "coffeeify": "~> 0.6"
+    "coffeeify": "^1.0.0",
+    "reactify": "^0.17.1"
   },
   "license": "MIT",
   "engines": {
     "node": ">= 0.10"
   },
   "dependencies": {
+    "bootstrap": "^3.3.1",
+    "fs": "0.0.2",
     "react": "^0.12.1",
     "react-bootstrap": "^0.13.0",
-    "react-router": "^0.11.4"
+    "react-router": "^0.11.4",
+    "showdown": "^0.3.1"
   }
 }

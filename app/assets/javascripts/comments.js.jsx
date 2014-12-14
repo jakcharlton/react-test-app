@@ -1,23 +1,6 @@
 var React = require('react');
 var RB = require('react-bootstrap');
-var Router = require('react-router');
-
-
 var converter = new Showdown.converter();
-
-var Comment = React.createClass({
-  render: function() {
-    var rawMarkup = converter.makeHtml(this.props.children.toString());
-    return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-      </div>
-    );
-  }
-});
 
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
@@ -66,6 +49,20 @@ var CommentBox = React.createClass({
   }
 });
 
+var Comment = React.createClass({
+  render: function() {
+    var rawMarkup = converter.makeHtml(this.props.children.toString());
+    return (
+      <div className="comment">
+        <h2 className="commentAuthor">
+          {this.props.author}
+        </h2>
+        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      </div>
+    );
+  }
+});
+
 var CommentList = React.createClass({
   render: function() {
     var commentNodes = this.props.data.map(function(comment, index) {
@@ -101,82 +98,21 @@ var CommentForm = React.createClass({
   },
   render: function() {
     return (
-      <div>
-    <RB.ButtonGroup>
-      <RB.Button>1</RB.Button>
-      <RB.Button>2</RB.Button>
-      <RB.DropdownButton title="Dropdown">
-        <RB.MenuItem eventKey="1">Dropdown link</RB.MenuItem>
-        <RB.MenuItem eventKey="2">Dropdown link</RB.MenuItem>
-      </RB.DropdownButton>
-    </RB.ButtonGroup>
       <form className="commentForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Your name" ref="author" />
-        <input type="text" placeholder="Say something..." ref="text" />
-        <RB.Button bsStyle="primary" type='submit'>Primary</RB.Button>
+        <div className="row">
+          <div className="form-group col-xs-3">
+            <input type="text"  className="form-control" placeholder="Your name" ref="author" />
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group col-xs-3">
+            <input type="text"  className="form-control" placeholder="Say something..." ref="text" />
+          </div>
+        </div>
+        <RB.Button bsStyle="primary" type='submit'>Add Comment</RB.Button>
       </form>
-      </div>
     );
   }
 });
 
-
-var Home = React.createClass({
-  render: function () {
-    return (
-      <div><h1>Home Page</h1></div>
-      );
-  }
-});
-
-var Inbox = React.createClass({
-  render: function () {
-    return (
-      <div><h1>Your Inbox</h1></div>
-      );
-  }
-});
-
-var NotFound = React.createClass({
-  render: function () {
-    return (
-      <div><h1>404</h1></div>
-      );
-  }
-});
-
-var App = React.createClass({
-  render: function () {
-    return (
-      <div>
-        <header>
-          <ul>
-            <li><Router.Link to="app">Home</Router.Link></li>
-            <li><Router.Link to="inbox">Inbox</Router.Link></li>
-            <li><Router.Link to="comments">Comments</Router.Link></li>
-          </ul>
-          Logged in as Jane
-        </header>
-
-        {/* this is the important part */}
-        <Router.RouteHandler/>
-      </div>
-    );
-  }
-});
-
-$(function() {
-  var routes = (
-    <Router.Route name="app" path="/" handler={App}>
-      <Router.Route name="inbox" handler={Inbox}/>
-      <Router.Route name="comments" handler={CommentBox}/>
-      <Router.DefaultRoute handler={Home}/>
-      <Router.NotFoundRoute handler={NotFound}/>
-    </Router.Route>
-  );
-
-  Router.run(routes, Router.HistoryLocation, function (Handler) {
-    React.render(<Handler/>, document.body);
-  });
-});
-
+module.exports = CommentBox

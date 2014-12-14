@@ -15,5 +15,30 @@
 //= require turbolinks
 //= require showdown
 
-//= require_tree .
 
+
+var React = require('react');
+var Router = require('react-router');
+var Route = require('react-router').Route;
+
+var App = require('app');
+var Comments = require('comments');
+var Home = require('home');
+var Inbox = require('inbox');
+var NotFound = require('not-found');
+
+
+$(function() {
+  var routes = (
+    <Route name="app" path="/" handler={App}>
+      <Route name="inbox" handler={Inbox}/>
+      <Route name="comments" handler={Comments}/>
+      <Router.DefaultRoute handler={Home}/>
+      <Router.NotFoundRoute handler={NotFound}/>
+    </Route>
+  );
+
+  Router.run(routes, Router.HistoryLocation, function (Handler) {
+    React.render(<Handler/>, document.body);
+  });
+});
