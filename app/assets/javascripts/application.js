@@ -14,10 +14,6 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require showdown
-//= require react
-//= require underscore/underscore-min
-//= require moment/moment
-
-//= require react-router/dist/react-router
 
 //= require_tree .
+

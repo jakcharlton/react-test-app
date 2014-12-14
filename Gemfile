@@ -44,3 +44,5 @@ gem 'showdown-rails'
 
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
+
+gem "browserify-rails"

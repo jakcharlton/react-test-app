@@ -1,14 +1,7 @@
-/**
- * This file provided by Facebook is for non-commercial testing and evaluation purposes only.
- * Facebook reserves all rights not expressly granted.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+var React = require('react');
+var RB = require('react-bootstrap');
+var Router = require('react-router');
+
 
 var converter = new Showdown.converter();
 
@@ -29,7 +22,7 @@ var Comment = React.createClass({
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
-      url: this.props.url,
+      url: 'comments.json',
       dataType: 'json',
       success: function(data) {
         this.setState({data: data});
@@ -41,7 +34,7 @@ var CommentBox = React.createClass({
   },
   handleCommentSubmit: function(comment) {
     $.ajax({
-      url: this.props.url,
+      url: 'comments.json',
       dataType: 'json',
       type: 'POST',
       data: { comment: comment },
@@ -108,19 +101,82 @@ var CommentForm = React.createClass({
   },
   render: function() {
     return (
+      <div>
+    <RB.ButtonGroup>
+      <RB.Button>1</RB.Button>
+      <RB.Button>2</RB.Button>
+      <RB.DropdownButton title="Dropdown">
+        <RB.MenuItem eventKey="1">Dropdown link</RB.MenuItem>
+        <RB.MenuItem eventKey="2">Dropdown link</RB.MenuItem>
+      </RB.DropdownButton>
+    </RB.ButtonGroup>
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="Your name" ref="author" />
         <input type="text" placeholder="Say something..." ref="text" />
-        <input type="submit" className='btn btn-primary' value="Post" />
+        <RB.Button bsStyle="primary" type='submit'>Primary</RB.Button>
       </form>
+      </div>
     );
   }
 });
 
 
+var Home = React.createClass({
+  render: function () {
+    return (
+      <div><h1>Home Page</h1></div>
+      );
+  }
+});
+
+var Inbox = React.createClass({
+  render: function () {
+    return (
+      <div><h1>Your Inbox</h1></div>
+      );
+  }
+});
+
+var NotFound = React.createClass({
+  render: function () {
+    return (
+      <div><h1>404</h1></div>
+      );
+  }
+});
+
+var App = React.createClass({
+  render: function () {
+    return (
+      <div>
+        <header>
+          <ul>
+            <li><Router.Link to="app">Home</Router.Link></li>
+            <li><Router.Link to="inbox">Inbox</Router.Link></li>
+            <li><Router.Link to="comments">Comments</Router.Link></li>
+          </ul>
+          Logged in as Jane
+        </header>
+
+        {/* this is the important part */}
+        <Router.RouteHandler/>
+      </div>
+    );
+  }
+});
+
 $(function() {
-  React.renderComponent(
-    <CommentBox url="comments" pollInterval={2000} />,
-    document.getElementById('content')
+  var routes = (
+    <Router.Route name="app" path="/" handler={App}>
+      <Router.Route name="inbox" handler={Inbox}/>
+      <Router.Route name="comments" handler={CommentBox}/>
+      <Router.DefaultRoute handler={Home}/>
+      <Router.NotFoundRoute handler={NotFound}/>
+    </Router.Route>
   );
-})
+
+  Router.run(routes, Router.HistoryLocation, function (Handler) {
+    React.render(<Handler/>, document.body);
+  });
+});
+
