@@ -86,14 +86,14 @@ var CommentList = React.createClass({
 var CommentForm = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
-    var author = this.refs.author.getDOMNode().value.trim();
-    var text = this.refs.text.getDOMNode().value.trim();
+    var author = $(this.refs.author.getDOMNode()).find('input').val().trim();
+    var text = $(this.refs.text.getDOMNode()).find('textarea').val().trim();
     if (!text || !author) {
       return;
     }
     this.props.onCommentSubmit({author: author, text: text});
-    this.refs.author.getDOMNode().value = '';
-    this.refs.text.getDOMNode().value = '';
+    $(this.refs.author.getDOMNode()).find('input').val('')
+    $(this.refs.text.getDOMNode()).find('textarea').val('')
     return;
   },
   render: function() {
@@ -101,12 +101,12 @@ var CommentForm = React.createClass({
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <div className="row">
           <div className="form-group col-xs-3">
-            <input type="text"  className="form-control" placeholder="Your name" ref="author" />
+            <RB.Input type="text" label='Your Name' placeholder="name?" ref='author' />
           </div>
         </div>
         <div className="row">
           <div className="form-group col-xs-3">
-            <input type="text"  className="form-control" placeholder="Say something..." ref="text" />
+            <RB.Input type="textarea" label='Your Comment' placeholder="what would you like to say?" ref='text' />
           </div>
         </div>
         <RB.Button bsStyle="primary" type='submit'>Add Comment</RB.Button>
